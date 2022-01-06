@@ -14,7 +14,7 @@ def test_case_generator(raw_test_cases: str) -> Tuple[Tuple[str, str], Tuple[str
     (('uri-online-judge', 'alemanha'), ('--- NOT FOUND ---', 'Frohliche Weihnachten!'))
     """
 
-    # quebra input em linhas, limpa as linhas e remove vazios do inicio e fim para formar um gerador de linhas do input
+    # quebra input em linhas de frases e remove linhas vazias do inicio e fim para formar um gerador de linhas do input
     lines = (line.split("|")[1:-1] for line in raw_test_cases.splitlines())
     # [[' uri-online-judge    ', ' --- NOT FOUND ---    '], [' alemanha      ', '  Frohliche Weihnachten!    ']]
 
@@ -26,10 +26,6 @@ def test_case_generator(raw_test_cases: str) -> Tuple[Tuple[str, str], Tuple[str
     # converte os pares (pais, saudacao) para o formato ((pais, pais), (saudacao, saucao))
     return tuple(zip(*cases_answs))
     # (('uri-online-judge', 'alemanha'), ('--- NOT FOUND ---', 'Frohliche Weihnachten!'))
-
-    # Desempenho?
-    # splitlines + n_frases for n_linhas + n_linhas
-    # n_linhas   + n_frases  *  n_linhas + n_linhas == n + nf * n + n == n*(nf + 2) == n*nf (O(n))
 
 
 def build_salutations_dict(raw_salutation_data: str) -> dict[str, str]:
@@ -46,9 +42,7 @@ def build_salutations_dict(raw_salutation_data: str) -> dict[str, str]:
     # separar o input em linhas e quebrar cada linha por palavra
     data_lines_gen = (d.split() for d in raw_salutation_data.splitlines())
     # formar um dicionario em que a primeira palavra de cada linha é a chave e as demais palabras compõe o valor (unidas em uma única string)
-    salutations_dict = {k: " ".join(v) for k, *v in data_lines_gen}
-
-    return salutations_dict
+    return {k: " ".join(v) for k, *v in data_lines_gen}
 
 
 def main():
